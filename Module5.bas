@@ -8,6 +8,35 @@ Sub newsalarydetail()
 
 '
 End Sub
+
+Public Sub DeleteRowsByCriteria(ByVal wb As Workbook, ByVal targetSheetName As String, ByVal criteria3 As String)
+    Dim ws1 As Worksheet
+    Dim lastRow1 As Long
+    Dim s As Long
+    Dim rowText As String
+    Dim v1 As String
+
+    On Error Resume Next
+    Set ws1 = wb.Worksheets(targetSheetName)
+    On Error GoTo 0
+    If ws1 Is Nothing Then Exit Sub
+
+    lastRow1 = ws1.Cells(ws1.Rows.Count, 1).End(xlUp).Row
+
+    ' Delete from bottom to top to avoid skipping rows.
+    For s = lastRow1 To 6 Step -1
+        rowText = CStr(ws1.Cells(s, 1).Value) & CStr(ws1.Cells(s, 2).Value)
+        If Len(rowText) >= 13 Then
+            v1 = Mid$(rowText, 7, 7)
+        Else
+            v1 = vbNullString
+        End If
+
+        If v1 <> criteria3 Then
+            ws1.Rows(s).Delete
+        End If
+    Next s
+End Sub
 Sub ¥¨¶°3()
 '
 ' ¥¨¶°3 ¥¨¶°
