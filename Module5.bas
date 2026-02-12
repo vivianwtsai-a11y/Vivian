@@ -8,6 +8,47 @@ Sub newsalarydetail()
 
 '
 End Sub
+
+Function LastRowOfLastTable(ws As Worksheet) As Long
+    Dim lo As ListObject
+    Dim lastTable As ListObject
+    Dim lastTableTop As Long
+    Dim lastTableLeft As Long
+    Dim currentTop As Long
+    Dim currentLeft As Long
+
+    If ws Is Nothing Then
+        LastRowOfLastTable = 0
+        Exit Function
+    End If
+
+    If ws.ListObjects.Count = 0 Then
+        LastRowOfLastTable = 0
+        Exit Function
+    End If
+
+    For Each lo In ws.ListObjects
+        currentTop = lo.Range.Row
+        currentLeft = lo.Range.Column
+
+        ' Pick the "last" table by position: lower rows first, then rightmost column.
+        If lastTable Is Nothing _
+            Or currentTop > lastTableTop _
+            Or (currentTop = lastTableTop And currentLeft > lastTableLeft) Then
+            Set lastTable = lo
+            lastTableTop = currentTop
+            lastTableLeft = currentLeft
+        End If
+    Next lo
+
+    If lastTable.DataBodyRange Is Nothing Then
+        ' Table has headers only.
+        LastRowOfLastTable = lastTable.HeaderRowRange.Row
+    Else
+        LastRowOfLastTable = lastTable.DataBodyRange.Row + lastTable.DataBodyRange.Rows.Count - 1
+    End If
+End Function
+
 Sub 巨集3()
 '
 ' 巨集3 巨集
@@ -51,7 +92,11 @@ Sub 巨集3()
         Exit Sub
     End If
     oyear = Mid(Userdata, 1, 3) - 1 & "年"
-    salNum = Cells(Rows.Count, 1).End(p).Row
+    salNum = LastRowOfLastTable(ActiveSheet)
+    If salNum = 0 Then
+        MsgBox "目前工作表找不到任何表格 (Table)。", vbExclamation
+        Exit Sub
+    End If
     MsgBox "salNum=" & salNum
     For i = 6 To salNum
         Rows(i).Select
