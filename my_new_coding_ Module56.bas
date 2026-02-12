@@ -1,9 +1,9 @@
 Attribute VB_Name = "Module521"
 
-Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
+Sub ç”¢ç”Ÿæ–°å¹´åº¦æ˜ç´°åŸºæœ¬æª”()
 '
-' ¥¨¶°3 ¥¨¶°
-' ²£¥Í·s¦~«×©ú²Ó
+' å·¨é›†3 å·¨é›†
+' ç”¢ç”Ÿæ–°å¹´åº¦æ˜ç´°
 '
 
 '
@@ -40,12 +40,12 @@ Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
     
     iCnt = 0
     
-    userData = InputBox(" - ½Ğ¿é¤J·sÁ~¸ê©ú²Ó°ò¥»ÀÉªº¦~¥÷(ex.115¦~):", "»s§@·s¦~«×Á~¸ê©ú²Ó°ò¥»ÀÉ")
+    userData = InputBox(" - è«‹è¼¸å…¥æ–°è–ªè³‡æ˜ç´°åŸºæœ¬æª”çš„å¹´ä»½(ex.115å¹´):", "è£½ä½œæ–°å¹´åº¦è–ªè³‡æ˜ç´°åŸºæœ¬æª”")
     If Len(Trim$(userData)) = 0 Then
     Exit Sub
     End If
     
-    If MsgBox(" - ½T©w²£¥Í" & userData & "Á~¸ê©ú²Ó°ò¥»ÀÉ", vbYesNo, "·s¦~«×Á~¸ê©ú²Ó°ò¥»ÀÉ") = vbNo Then
+    If MsgBox(" - ç¢ºå®šç”¢ç”Ÿ" & userData & "è–ªè³‡æ˜ç´°åŸºæœ¬æª”", vbYesNo, "æ–°å¹´åº¦è–ªè³‡æ˜ç´°åŸºæœ¬æª”") = vbNo Then
     Exit Sub
     End If
     
@@ -57,8 +57,8 @@ Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
     
     oyear = nyear - 1
     wyear = nyear + 1911
-    nyearLabel = CStr(nyear) & "¦~"
-    oyearLabel = CStr(oyear) & "¦~"
+    nyearLabel = CStr(nyear) & "å¹´"
+    oyearLabel = CStr(oyear) & "å¹´"
     wyearLabel = CStr(wyear)
     
     If Len(ThisWorkbook.Path) > 0 Then
@@ -69,14 +69,14 @@ Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
     
     salNum = Cells(Rows.Count, 1).End(xlUp).Row
     
-    criteria1 = oyearLabel & "12¤ë"
-    criteria2 = oyearLabel & "12¤ë(2)"
+    criteria1 = oyearLabel & "12æœˆ"
+    criteria2 = oyearLabel & "12æœˆ(2)"
     criteria3 = wyearLabel & "/1/"
 1
     
     For i = 6 To salNum
-    file1i = oyearLabel & CStr(Cells(i, 6).Value) & "Á~¸ê©ú²Ó.xlsx"
-    file2i = nyearLabel & CStr(Cells(i, 6).Value) & "Á~¸ê©ú²Ó.xlsx"
+    file1i = oyearLabel & CStr(Cells(i, 6).Value) & "è–ªè³‡æ˜ç´°.xlsx"
+    file2i = nyearLabel & CStr(Cells(i, 6).Value) & "è–ªè³‡æ˜ç´°.xlsx"
         
     srcFullPath = filePath & file1i
     dstFullPath = filePath & file2i
@@ -89,13 +89,13 @@ Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
          Application.DisplayAlerts = True
     
             
-         FilterRowsByMonth1 wb, "©î±bªí", criteria3
-         FilterRowsByMonth1 wb, "AA½X©u¼úª÷", criteria3
-         FilterRowsByMonth wb, "Á`ªí", criteria1, criteria2
-         FilterRowsByMonth wb, "¦æ¬FÁ`ªí", criteria1, criteria2
+         FilterRowsByMonth1 wb, "æ‹†å¸³è¡¨", criteria3
+         FilterRowsByMonth1 wb, "AAç¢¼å­£çé‡‘", criteria3
+         FilterRowsByMonth wb, "ç¸½è¡¨", criteria1, criteria2
+         FilterRowsByMonth wb, "è¡Œæ”¿ç¸½è¡¨", criteria1, criteria2
          
          
-         Sheets("Á`ªí").Select
+         Sheets("ç¸½è¡¨").Select
          Rows("9:16").Select
          Selection.Delete
          Columns("A:AO").Select
@@ -125,8 +125,8 @@ Sub ²£¥Í·s¦~«×©ú²Ó°ò¥»ÀÉ()
     
     Next i
     
-    MsgBox " - »s§@Á~¸ê©ú²Ó°ò¥»ÀÉ®×" & userData & " ¦@ " & iCnt & "µ§"
-    MsgBox " - µLªk»s§@Á~¸ê©ú²Ó°ò¥»ÀÉ®×¦W³æ:" & vbCrLf & fileNotExist
+    MsgBox " - è£½ä½œè–ªè³‡æ˜ç´°åŸºæœ¬æª”æ¡ˆ" & userData & " å…± " & iCnt & "ç­†"
+    MsgBox " - ç„¡æ³•è£½ä½œè–ªè³‡æ˜ç´°åŸºæœ¬æª”æ¡ˆåå–®:" & vbCrLf & fileNotExist
     
     End Sub
 Private Sub DeleteUnneededSheets(ByVal wb As Workbook, ByVal oyearLabel As String)
@@ -217,6 +217,6 @@ Private Function ShouldKeepSheet(ByVal sheetName As String, ByVal oyearLabel As 
     Dim nameLower As String
     
     nameLower = LCase$(sheetName)
-    ShouldKeepSheet = (nameLower = "format") Or (nameLower = "mformat") Or (sheetName = "¦æ¬FÁ`ªí") Or (sheetName = "Á`ªí") Or (sheetName = (oyearLabel & "12¤ë")) Or (sheetName = (oyearLabel & "12¤ë(2)")) Or (sheetName = (oyearLabel & "12¤ë¦æ¬F")) Or (sheetName = (oyearLabel & "12¤ë(2)¦æ¬F")) Or (sheetName = "©î±bªí") Or (sheetName = "A½X²M¥U") Or (sheetName = "AA½X©u¼úª÷")
+    ShouldKeepSheet = (nameLower = "format") Or (nameLower = "mformat") Or (sheetName = "è¡Œæ”¿ç¸½è¡¨") Or (sheetName = "ç¸½è¡¨") Or (sheetName = (oyearLabel & "12æœˆ")) Or (sheetName = (oyearLabel & "12æœˆ(2)")) Or (sheetName = (oyearLabel & "12æœˆè¡Œæ”¿")) Or (sheetName = (oyearLabel & "12æœˆ(2)è¡Œæ”¿")) Or (sheetName = "æ‹†å¸³è¡¨") Or (sheetName = "Aç¢¼æ¸…å†Š") Or (sheetName = "AAç¢¼å­£çé‡‘")
     
 End Function
