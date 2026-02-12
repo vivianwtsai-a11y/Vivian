@@ -25,12 +25,12 @@ Public Sub 產生新年度明細基本檔()
     Dim baseSheet As Worksheet
     Dim hadError As Boolean
     Dim errMsg As String
+    Dim currentStep As String
 
     Set baseSheet = ActiveSheet
     iCnt = 0
 
     userData = InputBox("請輸入新薪資明細基本檔的年份(ex.115年):", "製作新年度薪資明細基本檔")
-    If StrPtr(userData) = 0 Then Exit Sub
     If Len(Trim$(userData)) = 0 Then Exit Sub
 
     If MsgBox("確定產生 " & userData & " 薪資明細基本檔？", vbYesNo + vbQuestion, "新年度薪資明細基本檔") = vbNo Then
@@ -64,6 +64,7 @@ Public Sub 產生新年度明細基本檔()
     On Error GoTo CleanFail
 
     For i = 6 To salNum
+        currentStep = "組合檔名 (第 " & CStr(i) & " 筆)"
         file1i = oyearLabel & CStr(baseSheet.Cells(i, 6).Value) & "薪資明細.xlsx"
         file2i = nyearLabel & CStr(baseSheet.Cells(i, 6).Value) & "薪資明細.xlsx"
 
@@ -72,30 +73,33 @@ Public Sub 產生新年度明細基本檔()
 
         If FileExists(srcFullPath) Then
             If FileExists(dstFullPath) Then
+                currentStep = "刪除既有新年度檔案 (第 " & CStr(i) & " 筆)"
                 Kill dstFullPath
             End If
 
+            currentStep = "複製來源檔案 (第 " & CStr(i) & " 筆)"
             FileCopy srcFullPath, dstFullPath
+            currentStep = "開啟新年度檔案 (第 " & CStr(i) & " 筆)"
             Set wb = Workbooks.Open(dstFullPath)
 
+            currentStep = "刪除不需要工作表 (第 " & CStr(i) & " 筆)"
             DeleteUnneededSheets wb, oyearLabel
+            currentStep = "整理拆帳表/AA碼季獎金 (第 " & CStr(i) & " 筆)"
             FilterRowsByCreateTimeBlock wb, "拆帳表", keepCreateTokens
             FilterRowsByCreateTimeBlock wb, "AA碼季獎金", keepCreateTokens
             FilterRowsByCreateTimeBlock wb, "AA碼獎金", keepCreateTokens
+            currentStep = "整理總表/行政總表月份 (第 " & CStr(i) & " 筆)"
             FilterRowsByMonth wb, "總表", criteria1, criteria2
             FilterRowsByMonth wb, "行政總表", criteria1, criteria2
 
             If WorksheetExists(wb, "總表") Then
+                currentStep = "調整總表列 (第 " & CStr(i) & " 筆)"
                 With wb.Worksheets("總表")
                     .Rows("9:16").Delete
-                    With .Columns("A:AO").Font
-                        .Name = "Microsoft JhengHei UI"
-                        .Size = 10
-                        .Underline = xlUnderlineStyleNone
-                    End With
                 End With
             End If
 
+            currentStep = "儲存與關閉 (第 " & CStr(i) & " 筆)"
             wb.Save
             wb.Close SaveChanges:=False
             Set wb = Nothing
@@ -110,7 +114,7 @@ Public Sub 產生新年度明細基本檔()
 
 CleanFail:
     hadError = True
-    errMsg = "處理時發生錯誤：" & Err.Number & " - " & Err.Description
+    errMsg = "處理時發生錯誤：" & Err.Number & " - " & Err.Description & vbCrLf & "步驟：" & currentStep
     On Error Resume Next
     If Not wb Is Nothing Then
         wb.Close SaveChanges:=False
